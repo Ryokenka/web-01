@@ -8,8 +8,7 @@ var CARD_TEMPLATE = ""
   .concat("  </div>")
   .concat("</main>");
 
-// TODO #export-functions: remove the IIFE
-(function () {
+import { parseUrl } from "./utils";
   var environment = {
     api: {
       host: "http://localhost:8081",
@@ -20,7 +19,7 @@ var CARD_TEMPLATE = ""
   // TODO #class: use the ES6 class keyword
   // TODO #extends: extend Component
   /* class GameComponent constructor */
-  function GameComponent() {
+  export function GameComponent() {
     // TODO #extends: call super(template)
     // gather parameters from URL
     var params = parseUrl();
@@ -33,9 +32,6 @@ var CARD_TEMPLATE = ""
     this._matchedPairs = 0;
   }
 
-  // TODO #export-functions: remove this line
-  // put component in global scope, to be runnable right from the HTML.
-  window.GameComponent = GameComponent;
 
   // TODO #class: turn function into a method of GameComponent
   /* method GameComponent.init */
@@ -143,7 +139,7 @@ var CARD_TEMPLATE = ""
     setTimeout(
       // TODO #arrow-function: use arrow function instead.
       function () {
-        // TODO #spa: replace with './#score'
+
         var scorePage = "./#score";
         // TODO #template-literals:  use template literals (backquotes)
         window.location =
@@ -279,5 +275,4 @@ var CARD_TEMPLATE = ""
         return this._flipped;
       },
     },
-  });
-})();
+  })
