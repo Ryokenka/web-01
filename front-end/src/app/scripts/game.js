@@ -1,3 +1,4 @@
+import { Component } from "./component";
 import template from "../views/game.html";
 
 var CARD_TEMPLATE = ""
@@ -9,17 +10,15 @@ var CARD_TEMPLATE = ""
   .concat("</main>");
 
 import { parseUrl } from "./utils";
-  var environment = {
-    api: {
-      host: "http://localhost:8081",
-    },
-  };
+var environment = {
+  api: {
+    host: "http://localhost:8081",
+  },
+};
 
-  // TODO #class: use the ES6 class keyword
-  // TODO #extends: extend Component
-  /* class GameComponent constructor */
-  export function GameComponent() {
-    // TODO #extends: call super(template)
+export class GameComponent extends Component{
+  constructor() {
+    super(template);
     // gather parameters from URL
     var params = parseUrl();
 
@@ -28,13 +27,10 @@ import { parseUrl } from "./utils";
     this._size = parseInt(params.size) || 9;
     this._flippedCard = null;
     this._matchedPairs = 0;
-    this.template = template;
   }
 
-
-  // TODO #class: turn function into a method of GameComponent
   /* method GameComponent.init */
-  GameComponent.prototype.init = function init() {
+  init() {
     // fetch the cards configuration from the server
     this.fetchConfig(
       // TODO #arrow-function: use arrow function instead.
@@ -61,11 +57,10 @@ import { parseUrl } from "./utils";
         this.start();
       }.bind(this)
     );
-  };
-  // TODO #class: turn function into a method of GameComponent
+  }
 
   /* method GameComponent._appendCard */
-  GameComponent.prototype._appendCard = function _appendCard(card) {
+  _appendCard(card) {
     this._boardElement.appendChild(card.getElement());
 
     card.getElement().addEventListener(
@@ -75,11 +70,10 @@ import { parseUrl } from "./utils";
         this._flipCard(card);
       }.bind(this)
     );
-  };
+  }
 
-  // TODO #class: turn function into a method of GameComponent
   /* method GameComponent.start */
-  GameComponent.prototype.start = function start() {
+  start() {
     this._startTime = Date.now();
     var seconds = 0;
     // TODO #template-literals:  use template literals (backquotes)
@@ -95,11 +89,10 @@ import { parseUrl } from "./utils";
       }.bind(this),
       1000
     );
-  };
+  }
 
-  // TODO #class: turn function into a method of GameComponent
   /* method GameComponent.fetchConfig */
-  GameComponent.prototype.fetchConfig = function fetchConfig(cb) {
+  fetchConfig(cb) {
     var xhr =
       typeof XMLHttpRequest != "undefined"
         ? new XMLHttpRequest()
@@ -125,11 +118,10 @@ import { parseUrl } from "./utils";
       }
     };
     xhr.send();
-  };
+  }
 
-  // TODO #class: turn function into a method of GameComponent
   /* method GameComponent.goToScore */
-  GameComponent.prototype.goToScore = function goToScore() {
+  goToScore() {
     var timeElapsedInSeconds = Math.floor(
       (Date.now() - this._startTime) / 1000
     );
@@ -138,7 +130,6 @@ import { parseUrl } from "./utils";
     setTimeout(
       // TODO #arrow-function: use arrow function instead.
       function () {
-
         var scorePage = "./#score";
         // TODO #template-literals:  use template literals (backquotes)
         window.location =
@@ -152,11 +143,10 @@ import { parseUrl } from "./utils";
       }.bind(this),
       750
     );
-  };
+  }
 
-  // TODO #class: turn function into a method of GameComponent
   /* method GameComponent._flipCard */
-  GameComponent.prototype._flipCard = function _flipCard(card) {
+  _flipCard(card) {
     if (this._busy) {
       return;
     }
@@ -207,9 +197,10 @@ import { parseUrl } from "./utils";
         );
       }
     }
-  };
+  }
+}
 
-  // TODO #card-component: Change images location to /app/components/game/card/assets/***.png
+// TODO #card-component: Change images location to /app/components/game/card/assets/***.png
 import back from "/src/assets/cards/back.png";
 import card0 from "/src/assets/cards/card-0.png";
 import card1 from "/src/assets/cards/card-1.png";
@@ -236,14 +227,13 @@ var CARDS_IMAGE = [
   card9,
 ];
 
-// TODO #class: use the ES6 class keyword
-  // TODO #extends: extends Component
-  /* class CardComponent constructor */
-  function CardComponent(id) {
-    // TODO #extends: call super(CARD_TEMPLATE)
+/* class CardComponent constructor */
+class CardComponent extends Component {
+  constructor(id) {
     // is this card flipped?
+    super(CARD_TEMPLATE);
     this._flipped = false;
-    this.template = CARD_TEMPLATE;
+
 
     // has the matching card has been discovered already?
     this.matched = false;
@@ -260,29 +250,25 @@ var CARDS_IMAGE = [
   }
 
   /* method CardComponent.getElement */
-  CardComponent.prototype.getElement = function getElement() {
+  getElement() {
     return this._elt;
-  };
+  }
 
-  // TODO #class: turn function into a method of CardComponent
   /* method CardComponent.flip */
-  CardComponent.prototype.flip = function flip() {
-    this._imageElt.classList.toggle("flip");
+  flip() {
     this._flipped = !this._flipped;
-  };
+    this._imageElt.classList.toggle("flip");
+  }
 
-  // TODO #class: turn function into a method of CardComponent
   /* method CardComponent.equals */
-  CardComponent.prototype.equals = function equals(card) {
+  equals(card) {
     return card._id === this._id;
-  };
+  }
 
-  // TODO #class: turn function into a method of CardComponent
-  /* CardComponent.get flipped() */
-  Object.defineProperties(CardComponent.prototype, {
-    flipped: {
-      get: function () {
-        return this._flipped;
-      },
-    },
-  })
+  get flipped() {
+    return this._flipped;
+  }
+  set flipped(flipped){
+    this.flipped = flipped;
+  }
+}
