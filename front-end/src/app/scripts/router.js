@@ -14,7 +14,6 @@
    * Create a new router. This router will load components into the given outlet.
    * @param {HTMLElement} outlet The element to put components into.
    */
-  // TODO #export-router: export this function
   export function Router(outlet) {
     this._components = {};
     this._templates = {};
