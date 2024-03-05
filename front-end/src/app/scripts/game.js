@@ -16,7 +16,7 @@ let environment = {
   },
 };
 
-export class GameComponent extends Component{
+export class GameComponent extends Component {
   constructor() {
     super(template);
     // gather parameters from URL
@@ -32,50 +32,38 @@ export class GameComponent extends Component{
   /* method GameComponent.init */
   init() {
     // fetch the cards configuration from the server
-    this.fetchConfig(
-        (config) => {
-        this._config = config;
-        this._boardElement = document.querySelector(".cards");
+    this.fetchConfig((config) => {
+      this._config = config;
+      this._boardElement = document.querySelector(".cards");
 
-        // create cards out of the config
-        this._cards = [];
-        // TODO #functional-programming: use Array.map() instead.
-        for (let i in this._config.ids) {
-          this._cards[i] = new CardComponent(this._config.ids[i]);
-        }
+      // create cards out of the config
+      this._cards = this._config.ids.map((id) => new CardComponent(id));
 
-        // TODO #functional-programming: use Array.forEach() instead.
-        for (let i in this._cards) {
-          let card = this._cards[i];
+      this._cards.forEach((card) => {
+        this._boardElement.appendChild(card.getElement());
 
-          this._boardElement.appendChild(card.getElement());
+        card.getElement().addEventListener("click", () => {
+          this._flipCard(card);
+        });
+      });
 
-          card.getElement().addEventListener(
-              "click",
-              () => {
-                this._flipCard(card);
-              }
-          );
-        }
-
-        this.start();
-      }
-    );
+      this.start();
+    });
   }
 
   /* method GameComponent.start */
   start() {
     this._startTime = Date.now();
     let seconds = 0;
-    document.querySelector("nav .navbar-title").textContent =
-        `Player: ${this._name}. Elapsed time: ${seconds++}`;
+    document.querySelector("nav .navbar-title").textContent = `Player: ${
+      this._name
+    }. Elapsed time: ${seconds++}`;
 
-    this._timer = setInterval(
-        () => {
-        document.querySelector("nav .navbar-title").textContent =
-            `Player: ${this._name}. Elapsed time: ${seconds++}`;
-      }, 1000
-    );
+    this._timer = setInterval(() => {
+      document.querySelector("nav .navbar-title").textContent = `Player: ${
+        this._name
+      }. Elapsed time: ${seconds++}`;
+    }, 1000);
   }
 
   /* method GameComponent.fetchConfig */
@@ -112,13 +100,10 @@ export class GameComponent extends Component{
     );
     clearInterval(this._timer);
 
-    setTimeout(
-        () => {
-        let scorePage = "./#score";
-          window.location =
-              `${scorePage}?name=${this._name}&size=${this._size}&time=${timeElapsedInSeconds}`;
-        }, 750
-    );
+    setTimeout(() => {
+      let scorePage = "./#score";
+      window.location = `${scorePage}?name=${this._name}&size=${this._size}&time=${timeElapsedInSeconds}`;
+    }, 750);
   }
 
   /* method GameComponent._flipCard */
@@ -158,17 +143,15 @@ export class GameComponent extends Component{
 
         // cards did not match
         // wait a short amount of time before hiding both cards
-        setTimeout(
-            () => {
-            // hide the cards
-            this._flippedCard.flip();
-            card.flip();
-            this._busy = false;
+        setTimeout(() => {
+          // hide the cards
+          this._flippedCard.flip();
+          card.flip();
+          this._busy = false;
 
-            // reset flipped card for the next turn.
-            this._flippedCard = null;
-          }, 500
-        );
+          // reset flipped card for the next turn.
+          this._flippedCard = null;
+        }, 500);
       }
     }
   }
@@ -208,7 +191,6 @@ class CardComponent extends Component {
     super(CARD_TEMPLATE);
     this._flipped = false;
 
-
     // has the matching card has been discovered already?
     this.matched = false;
 
@@ -242,7 +224,7 @@ class CardComponent extends Component {
   get flipped() {
     return this._flipped;
   }
-  set flipped(flipped){
+  set flipped(flipped) {
     this.flipped = flipped;
   }
 }
