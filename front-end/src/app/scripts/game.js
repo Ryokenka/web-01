@@ -116,8 +116,7 @@ export class GameComponent extends Component{
         () => {
         let scorePage = "./#score";
           window.location =
-              `${scorePage}?name=${this._name}&size=
-              ${this._size}&time=${timeElapsedInSeconds}`;
+              `${scorePage}?name=${this._name}&size=${this._size}&time=${timeElapsedInSeconds}`;
         }, 750
     );
   }
