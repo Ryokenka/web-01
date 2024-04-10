@@ -6,6 +6,8 @@ import { CardComponent } from "./card/card.component";
 import template from "./game.component.html";
 import "./game.component.css";
 
+import * as localforage from "localforage/dist/localforage";
+
 let environment = {
   api: {
     host: "http://localhost:8081",

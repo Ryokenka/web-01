@@ -1,8 +1,6 @@
 /*****
  * Score Component
  */
-
-/* score { ... } */
 .score-cmp img.happy:hover {
     /* Start the shake animation and make the animation last for 0.5 seconds */
     animation: shake 0.5s;
@@ -45,4 +43,37 @@
     100% {
         transform: translate(1px, -2px) rotate(-3deg);
     }
+}
+
+.score-cmp table {
+    border-collapse: collapse;
+    margin: 0 0 16px;
+    width: 100%;
+}
+
+.score-cmp th,
+.score-cmp td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.score-cmp th {
+    background-color: #f5f5f5;
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.score-cmp td {
+    color: #666;
+    font-size: 18px;
+}
+
+.score-cmp tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.score-cmp tr:hover {
+    background-color: #f2f2f2;
 }

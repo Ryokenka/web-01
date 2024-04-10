@@ -1,5 +1,6 @@
+
 /**
- * Append a html template to the document, at the given outlet.
+ * Append an html template to the document, at the given outlet.
  * @param HTMLElement outlet the location on the document to add the template
  * @param HTMLElement template the template to append
  */
@@ -7,9 +8,9 @@ function renderTemplate(outlet, template) {
   while (outlet.lastChild) {
     outlet.removeChild(outlet.lastChild);
   }
+
   outlet.appendChild(template);
 }
-
 /**
  * Create a new router. This router will load components into the given outlet.
  * @param {HTMLElement} outlet The element to put components into.
@@ -19,11 +20,14 @@ export function Router(outlet) {
   this._templates = {};
   this._outlet = outlet;
 
-  window.addEventListener("beforeunload", (event) => this._onLocationChanged());
+  window.addEventListener("beforeunload", (event) =>
+      this._onLocationChanged()
+  );
   window.addEventListener("hashchange", (event) =>
-    this._onLocationChanged(event.newURL)
+      this._onLocationChanged(event.newURL)
   );
 }
+
 
 /**
  * Bind a component ot be displayed when the registered URL is reached.
@@ -35,12 +39,14 @@ Router.prototype.register = function (hash, componentEntry) {
   var path = `#${hash}`;
   if (!componentEntry) {
     throw new TypeError(
-      `provided arg should be a Component. Got: ${componentEntry}`
+        `provided arg should be a Component. Got: ${componentEntry}`
     );
   }
 
   if (typeof hash !== "string") {
-    throw new TypeError(`provided route url should be a string. Got: ${hash}`);
+    throw new TypeError(
+        `provided route url should be a string. Got: ${hash}`
+    );
   } else {
     this._components[path] = componentEntry;
   }
@@ -74,9 +80,9 @@ Router.prototype._renderComponent = function (componentEntry) {
 
   var element = document.createElement("template");
   element.innerHTML =
-    componentEntry.template ||
-    component.template ||
-    (component.getTemplate && component.getTemplate());
+      componentEntry.template ||
+      component.template ||
+      (component.getTemplate && component.getTemplate());
 
   renderTemplate(outlet, element.content.cloneNode(true));
   if (typeof component.init === "function") {
@@ -96,37 +102,23 @@ Router.prototype._onLocationChanged = function (loc) {
     this._renderComponent(componentEntry);
   } else if (loc.startsWith(window.location.origin)) {
     console.warn(
-      `navigated to "${loc}, but no component was registered at this address"`
+        `navigated to "${loc}, but no component was registered at this address"`
     );
   }
 };
-
 function _getRouteHash(url) {
   return new URL(url).hash.split("?")[0] || "#";
 }
 
-function _fetchTemplate(templateUrl, cb) {
-  var xhr =
-    typeof XMLHttpRequest != "undefined"
-      ? new XMLHttpRequest()
-      : new ActiveXObject("Microsoft.XMLHTTP");
-
-  xhr.open("get", templateUrl, true);
-
-  xhr.onreadystatechange = function () {
-    var status;
-    var data;
-    // https://xhr.spec.whatwg.org/#dom-xmlhttprequest-readystate
-    if (xhr.readyState == 4) {
-      // `DONE`
-      status = xhr.status;
-      if (status == 200) {
-        data = xhr.responseText;
-        cb(data);
-      } else {
-        throw new Error(status);
-      }
+async function _fetchTemplate(templateUrl) {
+  try {
+    const response = await fetch(templateUrl);
+    if (!response.ok) {
+      throw new Error(response.status);
     }
-  };
-  xhr.send();
+    const data = await response.text();
+    return data;
+  } catch (error) {
+    throw new Error(`Failed to fetch template: ${error.message}`);
+  }
 }

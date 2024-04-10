@@ -1,21 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-  <body>
-        <main class="score-cmp">
-          <div class="d-flex p-3">
-            <div class="flex-grow-1">
-              <h3 class="congrats">CONGRATS<br /><span id="name"></span></h3>
-            </div>
-            <div>
-              <!-- TODO #component-images: change image location to './assets/happy_homer.jpg' -->
-              <img src="./assets/happy_homer.jpg" class="happy" />
-              <p class="size"><span id="size"></span> pairs</p>
-              <p class="time"><span id="time"></span>s</p>
-            </div>
-          </div>
-        </main>
-    <script>
-      new ScoreComponent().init();
-    </script>
-  </body>
+<body>
+<main class="score-cmp">
+  <div class="d-flex p-3">
+    <div class="flex-grow-1">
+      <h3 class="congrats">CONGRATS<br /><span id="name"></span></h3>
+      <label for="filter-select">Filter by size:</label>
+      <select id="filter-select">
+        <option value="0">All</option>
+        <!-- Generate options for all possible board sizes from 2x2 to 12x12 -->
+        <option value="2">2x2</option>
+        <option value="3">3x3</option>
+        <option value="4">4x4</option>
+        <option value="5">5x5</option>
+        <option value="6">6x6</option>
+        <option value="7">7x7</option>
+        <option value="8">8x8</option>
+        <option value="9">9x9</option>
+        <option value="10">10x10</option>
+      </select>
+      <table id="highscore">
+        <!-- Table headers and rows will be added dynamically by the JavaScript code -->
+      </table>
+    </div>
+    <div>
+      <img src="./assets/happy_homer.jpg" class="happy" />
+      <p class="size"><span id="size"></span> pairs</p>
+      <p class="time"><span id="time"></span>s</p>
+    </div>
+  </div>
+</main>
+<script>
+  new ScoreComponent().init();
+</script>
+</body>
 </html>
+
